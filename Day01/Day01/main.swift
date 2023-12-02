@@ -8,7 +8,7 @@ let day = "01"
 
 print("Hello, AoC 2023! This is Day \(day).")
 
-let content = try String(contentsOfFile:path + "/Day\(day)/input.txt", encoding: String.Encoding.utf8)
+let content = try String(contentsOfFile:path + "/Day\(day)/Day\(day)/input.txt", encoding: String.Encoding.utf8)
 let lines = content.components(separatedBy: "\n")
 
 // part 1
