@@ -20,25 +20,20 @@ for line in lines {
     
     var game = Game()
     
-    let sid = line.components(separatedBy: ":")
+    let sid = line.components(separatedBy: ": ")
     game.ID = Int(sid[0].components(separatedBy: " ")[1])!
     
-    let cubesList = sid[1].components(separatedBy: ";")
-    
+    let cubesList = sid[1].components(separatedBy: "; ")
     for cubes in cubesList {
         var rgb = RGB()
-        let colors = cubes.components(separatedBy: ",")
+        let colors = cubes.components(separatedBy: ", ")
         for color in colors {
-            let x = color.trimmingCharacters(in: .whitespaces).components(separatedBy: " ")
+            let x = color.components(separatedBy: " ")
             switch x[1] {
-            case "red":
-                rgb.Red = Int(x[0])!
-            case "blue":
-                rgb.Blue = Int(x[0])!
-            case "green":
-                rgb.Green = Int(x[0])!
-            default:
-                break
+            case "red": rgb.Red = Int(x[0])!
+            case "blue": rgb.Blue = Int(x[0])!
+            case "green": rgb.Green = Int(x[0])!
+            default: fatalError("unknown color")
             }
         }
         game.cubes.append(rgb)
@@ -103,7 +98,6 @@ for game in games {
 }
 
 print("Part 2: \(result2)")
-
 
 // ...
 
