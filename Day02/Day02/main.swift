@@ -6,18 +6,14 @@ let path = "/Users/david/Library/CloudStorage/OneDrive-Personal/20-29 Projects/2
 let day = "02"
 print("Hello, AoC 2023! This is Day \(day).")
 let content = try String(contentsOfFile: path + "/Day\(day)/Day\(day)/input.txt", encoding: String.Encoding.utf8)
-let lines = content.components(separatedBy: "\n")
+let lines = content.components(separatedBy: "\n").filter { !$0.isEmpty }
 
 // part 1
 
 var games: [Game] = []
 
 for line in lines {
-    
-    if (line == "") {
-        break
-    }
-    
+
     var game = Game()
     
     let sid = line.components(separatedBy: ": ")
