@@ -16,6 +16,15 @@ var result1 = 0
 let cards = lines.map(Card.init)
 for card in cards {
     let result = pow(2, Double(card.wins.filter { card.nums.contains($0) }.count - 1))
+    
+    // or sets!
+    // let winners = Set(nums[0].allInts())
+    // let numbers = Set(nums[1].allInts())
+    // matches = numbers.intersection(winners).count
+    
+    // or << instead of pow
+    // 1 << (matches - 1) // pow(2, matches - 1)
+    
     result1 = result1 + Int(result)
 }
 
