@@ -1,5 +1,4 @@
 import Foundation
-import Prism
  
 // https://adventofcode.com/2023/day/5
 
@@ -7,7 +6,7 @@ let day = "05"
 print("Hello, AoC 2023! This is Day \(day).")
 
 let path = "/Users/david/Library/CloudStorage/OneDrive-Personal/20-29 Projects/21 Code/21.24 AdventOfCode/AdventOfCode2023-Swift/"
-let content = try String(contentsOfFile: path + "/Day\(day)/Day\(day)/input-sample.txt", encoding: String.Encoding.utf8)
+let content = try String(contentsOfFile: path + "/Day\(day)/Day\(day)/input.txt", encoding: String.Encoding.utf8)
 let lines = content.components(separatedBy: "\n")
 
 // parse input
@@ -15,8 +14,6 @@ let lines = content.components(separatedBy: "\n")
 var seeds = lines[0].components(separatedBy: ": ")[1].components(separatedBy: " ").map { Int($0)! }
 
 var maps = [Map]()
-var mapIndex = 0
-maps.append(Map())
 
 for i in 2..<lines.count {
     let line = lines[i]
@@ -30,6 +27,7 @@ for i in 2..<lines.count {
         maps[mapIndex].add(line: line)
     }
 }
+var mapIndex = 0
 
 // part 1
 
@@ -46,6 +44,28 @@ var result1 = Int.max
 //    // print("   -> ", String(destination))
 //    if result1 > destination {
 //        result1 = destination
+//    }
+//}
+
+//var found = false
+//var i = 0
+//while !found {
+//    var source = i;
+//    //print("\(i)")
+//    for map in maps.reversed() {
+//        source = map.inverseMapValue(value: source)
+//        //print("\(map.Name) -> \(source)")
+//    }
+//    
+//    if seeds.contains(source) {
+//        found = true
+//        print("\(i) -> \(source)")
+//    }
+//    i = i + 1;
+    //let formatted = Prism(Bold("\(destination)"))
+    //    // print("   -> ", String(destination))
+//    if result1 > destination {
+//       result1 = destination
 //    }
 //}
 
@@ -73,25 +93,35 @@ var searching = 0
 var found = false
 while !found {
     
-    var destination = searching
+    if searching.isMultiple(of: 1000000) {
+        print(".", terminator: "")
+    }
+        
     
-    for i in stride(from: maps.count-1, through: 0, by: -1) {
-        destination = maps[i].inverseMapValue(value: destination)
+    var source = searching
+    // print("   \(source)")
+    for map in maps.reversed() {
+        source = map.inverseMapValue(value: source)
+//        print("   -> \(source)")
     }
     
-    if (seedsArray.contains(where: { $0.containtsSeed(value: destination) } )) {
-        result2 = destination
+    if (seedsArray.contains(where: { $0.containtsSeed(value: source) } )) {
+        found = true
+        result2 = searching
+//        print("   -> fix!")
         break
+    } else {
+        searching = searching + 1
     }
-    
-    searching = searching + 1
     
 }
 
 print("Part 2: \(result2)")
 
+// MARK: Helpers
+
 class Map {
-    var Name: String = "unkown"
+    var Name: String = "unknown"
     var Mappings: [Mapping] = [] // source, desc, length
     
     public func add(line: String) {
@@ -122,7 +152,7 @@ struct Seed {
     var length : Int
     
     public func containtsSeed(value: Int) -> Bool {
-        return number >= value && number <= value + length;
+        return value >= number && value < number + length;
     }
 }
 
@@ -132,10 +162,10 @@ struct Mapping {
     var length: Int
     
 //    public func ContaintsSource(value: Int) -> Bool {
-//        return value >= source && value < value + length;
+//        return value >= source && value < source + length;
 //    }
     
     public func ContaintsDestination(value: Int) -> Bool {
-        return value >= destination && destination < value + length;
+        return value >= destination && value < destination + length;
     }
 }
