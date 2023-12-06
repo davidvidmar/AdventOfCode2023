@@ -1,6 +1,6 @@
 import Foundation
  
-// https://adventofcode.com/2023/day/5
+// https://adventofcode.com/2023/day/6
 
 let day = "06"
 print("Hello, AoC 2023! This is Day \(day).")
