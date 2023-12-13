@@ -39,63 +39,9 @@ for r in (0..<points.count).reversed() {
     }
 }
 
-// parse
-
-//var map: [[Int]] = []
-//var i = 0
-//for line in lines {
-//    map.append(line.map( { $0 == "." ? 0 : 1 }))
-//}
-
-//printMap(map: map)
-//print()
-
-// expand rows
-
-//for i in (0..<map.count).reversed() {
-//    if map[i].reduce(0, +) == 0 {
-//        let emptyLine = Array(repeating: 0, count:map[i].count)
-////        print("Row: \(i)")
-//        map.insert(emptyLine, at: i)
-//    }
-//}
-
-//printMap(map: map)
-//print()
-
-// expand columns
-
-//for colIndex in (0..<map[0].count).reversed() {
-//    var colSum = 0
-//    for rowIndex in (0..<map.count) {
-//        colSum += map[rowIndex][colIndex]
-//    }
-//    if (colSum == 0) {
-////        print("Col: \(colIndex)")
-//        for rowIndex in (0..<map.count) {
-//            map[rowIndex].insert(0, at: colIndex)
-//        }
-//    }
-//}
-
-// number items
-
-//var counter = 1
-//for rowIndex in 0..<map.count {
-//    for colIndex in 0..<map[0].count {
-//        if (map[rowIndex][colIndex] != 0) {
-//            map[rowIndex][colIndex] = counter
-//            counter += 1
-//        }
-//    }
-//}
-
-//printMap(map: map)
-
 // part 1
 
 var result1 = 0
-
 for (i, p) in points.enumerated() {
     for (j, r) in points.enumerated() {
         if i < j && p != r {
@@ -109,13 +55,38 @@ print("Part 1: \(result1)")
 
 // part 2
 
-var result2 = lines.count
-//...
-
-print("Part 2: \(result2)")
-
-func printMap(map: [[Int]]) {
-    for row in map {
-        print(row)
+points.removeAll()
+for (l, line) in lines.enumerated()  {
+    for (c, char) in line.enumerated() {
+        if char == "#" { points.append((l, c)) }
     }
 }
+
+// expand COLUMNS
+for c in (0..<points.count).reversed() {
+    if points.allSatisfy({ $0.1 != c }) {
+        for (i, p) in points.enumerated() {
+            if p.1 > c { points[i].1 = p.1 + 999999 }
+        }
+    }
+}
+
+// expand ROWS
+for r in (0..<points.count).reversed() {
+    if points.allSatisfy({ $0.0 != r } ) {
+        for (i, p) in points.enumerated() {
+            if p.0 > r { points[i].0 = p.0 + 999999 }
+        }
+    }
+}
+
+var result2 = 0
+for (i, p) in points.enumerated() {
+    for (j, r) in points.enumerated() {
+        if i < j && p != r {
+            result2 += abs(p.0 - r.0) + abs(p.1 - r.1)
+        }
+    }
+}
+
+print("Part 2: \(result2)")
